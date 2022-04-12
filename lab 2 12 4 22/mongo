@@ -1,0 +1,129 @@
+bmsce@bmsce-Precision-T1700:~$ mongo
+MongoDB shell version v3.6.8
+connecting to: mongodb://127.0.0.1:27017
+Implicit session: session { "id" : UUID("521b3542-a41a-4384-9535-9762f6255532") }
+MongoDB server version: 3.6.8
+Server has startup warnings: 
+2022-04-12T09:11:11.650+0530 I STORAGE  [initandlisten] 
+2022-04-12T09:11:11.650+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2022-04-12T09:11:11.650+0530 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] 
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] 
+> show dbs
+admin        0.000GB
+config       0.000GB
+harshithadb  0.000GB
+local        0.000GB
+myDB         0.000GB
+> db
+test
+> use local
+switched to db local
+> db.createCollection("Student");
+{ "ok" : 1 }
+> db.Student.update({_id:3,StudName:"AryamDavid",Grade:"7",Hobbies:"gardening"});
+2022-04-12T09:25:00.243+0530 E QUERY    [thread1] Error: need an object :
+DBCollection.prototype._parseUpdate@src/mongo/shell/collection.js:443:1
+DBCollection.prototype.update@src/mongo/shell/collection.js:483:18
+@(shell):1:1
+> db.Student.insert({_id:3,StudName:"AryamDavid",Grade:"7",Hobbies:"gardening"});
+WriteResult({ "nInserted" : 1 })
+> db.Student.update({_id:3,StudName:"AryamDavid",Grade:"7"},{$set:{Hobbies:"skating"}},{upsert:true});
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.find({StudName:"Aryam David"});
+> db.Student.find({},{StudName:1,Grade:1,_id:0});
+{ "StudName" : "AryamDavid", "Grade" : "7" }
+> db.Student.find({Grade:{$eq:'7'}}).pretty();
+{
+	"_id" : 3,
+	"StudName" : "AryamDavid",
+	"Grade" : "7",
+	"Hobbies" : "skating"
+}
+> db.Student.find({Hobbies:{$in:['Chess','skating']}}).pretty();
+{
+	"_id" : 3,
+	"StudName" : "AryamDavid",
+	"Grade" : "7",
+	"Hobbies" : "skating"
+}
+> db.Student.find({StudName:/^M/}).pretty();
+> db.Student.find({StudName:/e/}).pretty();
+> db.Student.count();
+1
+> db.Students.save({StudName:"Vamsi,Grade:"6"})
+2022-04-12T09:50:58.078+0530 E QUERY    [thread1] SyntaxError: missing } after property list @(shell):1:41
+> db.Student.save({StudName:"Vamsi,Grade:"6"})
+2022-04-12T09:51:21.886+0530 E QUERY    [thread1] SyntaxError: missing } after property list @(shell):1:40
+> db.Student.save({_id:3,StudName:"Vamsi,Grade:"6"})
+2022-04-12T09:53:38.149+0530 E QUERY    [thread1] SyntaxError: missing } after property list @(shell):1:46
+> db.Student.save({StudName:"Vamsi",Grade:"6"})
+WriteResult({ "nInserted" : 1 })
+> db.Student.update({_id:4},{$unset:{Location:"Network"}})
+WriteResult({ "nMatched" : 0, "nUpserted" : 0, "nModified" : 0 })
+> db.Student.find({_id:1},{StudName:1,Grade:1,_id:0});
+> db.Student.find({Grade:{$ne:'7'}}).pretty();
+{
+	"_id" : ObjectId("6254ff742aba2bdfa338276b"),
+	"StudName" : "Vamsi",
+	"Grade" : "6"
+}
+> db.Student.find({StudName:/s$/}).pretty();
+> db.Student.update({_id:3},{$set:{Location:null}})
+WriteResult({ "nMatched" : 1, "nUpserted" : 0, "nModified" : 1 })
+> db.Student.count();
+2
+> db.Student.find({Grade:"7"}).limit(3).pretty();
+{
+	"_id" : 3,
+	"StudName" : "AryamDavid",
+	"Grade" : "7",
+	"Hobbies" : "skating",
+	"Location" : null
+}
+> db.food.insert({_id:1,fruits:["grapes","mango","apple"]})
+WriteResult({ "nInserted" : 1 })
+> db.food.insert({_id:2,fruits:["grapes","mango","cherry"]})
+WriteResult({ "nInserted" : 1 })
+> db.food.insert({_id:3,fruits:["banana","mango"]})
+WriteResult({ "nInserted" : 1 })
+> db.food.find({fruits:["grapes","mango","apple"]}).pretty()
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+> db.food.find({'fruits.1':"grapes"})
+> db.food.find({'fruits':{$size:2}})
+{ "_id" : 3, "fruits" : [ "banana", "mango" ] }
+> db.food.find({'fruits':{$all:["mango","grapes"]}})
+{ "_id" : 1, "fruits" : [ "grapes", "mango", "apple" ] }
+{ 
+[1]+  Stopped                 mongo
+bmsce@bmsce-Precision-T1700:~$ mongo
+MongoDB shell version v3.6.8
+connecting to: mongodb://127.0.0.1:27017
+Implicit session: session { "id" : UUID("f09bd52a-c980-4de0-a3ec-bee01b7f4d68") }
+MongoDB server version: 3.6.8
+Server has startup warnings: 
+2022-04-12T09:11:11.650+0530 I STORAGE  [initandlisten] 
+2022-04-12T09:11:11.650+0530 I STORAGE  [initandlisten] ** WARNING: Using the XFS filesystem is strongly recommended with the WiredTiger storage engine
+2022-04-12T09:11:11.650+0530 I STORAGE  [initandlisten] **          See http://dochub.mongodb.org/core/prodnotes-filesystem
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] 
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] ** WARNING: Access control is not enabled for the database.
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] **          Read and write access to data and configuration is unrestricted.
+2022-04-12T09:11:15.506+0530 I CONTROL  [initandlisten] 
+> show dbs
+admin        0.000GB
+config       0.000GB
+harshithadb  0.000GB
+local        0.000GB
+myDB         0.000GB
+> use local
+switched to db local
+> show collections
+Student
+food
+startup_log
+> ^C
+bye
+bmsce@bmsce-Precision-T1700:~$ 
+
