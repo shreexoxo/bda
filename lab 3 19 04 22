@@ -1,0 +1,99 @@
+bmsce@bmsce-Precision-T1700:~$ cqlsh
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.4 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh> use employee1
+   ... 
+   ... 
+cqlsh> use Employee1
+   ... 
+cqlsh> USE employee1
+   ... 
+cqlsh> Create keyspace Employee12 with replication={'class':'SimpleStrategy','replication_factor':1};
+cqlsh> create table Employee_Info(Emp_Id int Primary Key,Emp_Name text,Designation text,Date_of_joining timestamp,Salary double,Dept_Name text);
+InvalidRequest: Error from server: code=2200 [Invalid query] message="No keyspace has been specified. USE a keyspace, or explicitly specify keyspace.tablename"
+cqlsh> describe keyspaces
+
+students       system_auth  employee1           employee       employee12
+system_schema  system       system_distributed  system_traces
+
+cqlsh> Use employee1;
+cqlsh:employee1> create table Employee_Info(Emp_Id int,Emp_Name text,Designation text,Date_of_joining timestamp,Salary double,Dept_Name text primary key(Emp_Id));
+SyntaxException: line 1:135 mismatched input '(' expecting ')' (... double,Dept_Name text primary key[(]...)
+cqlsh:employee1> create table Employee_Info(Emp_Id int,Emp_Name text,Designation text,Date_of_joining timestamp,Salary double,Dept_Name text, primary key(Emp_Id));
+cqlsh:employee1> begin batch
+             ... insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name)
+             ... values(101,'Rajesh kumar','employee','2022-02-01',45000,'chemical eng')
+             ... insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name)
+             ...              ... values(101,'Rajesh kumar','employee','2022-02-01',45000,'chemical eng')
+             ... 
+[1]+  Stopped                 cqlsh
+bmsce@bmsce-Precision-T1700:~$ cqlsh
+Connected to Test Cluster at 127.0.0.1:9042.
+[cqlsh 5.0.1 | Cassandra 3.11.4 | CQL spec 3.4.4 | Native protocol v4]
+Use HELP for help.
+cqlsh> use employee1;
+cqlsh:employee1> begin batch
+             ... insert insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name)
+             ... values(102,'Prithvi j','manager','2021-09-06',78523,'sells')
+             ... Apply batch
+             ... Apply batch;
+SyntaxException: line 2:7 mismatched input 'insert' expecting K_INTO (begin batchinsert [insert]...)
+cqlsh:employee1> begin batch
+             ...  insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name) values(102,'Prithvi j','manager','2021-09-06',78523,'sells') 
+             ... apply batch
+             ... 
+             ... apply batch;
+SyntaxException: line 5:0 mismatched input 'apply' expecting EOF (...,78523,'sells') apply batch[apply]...)
+cqlsh:employee1> begin batch 
+             ...  insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name) 
+             ...  values(102,'Prithvi j','manager','2021-09-06',78523,'sells')  apply batch  apply batch;
+SyntaxException: line 3:76 mismatched input 'apply' expecting EOF (...,78523,'sells')  apply batch  [apply]...)
+cqlsh:employee1> begin batch 
+             ...  insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name) 
+             ...  values(102,'Prithvi j','manager','2021-09-06',78523,'sells') 
+             ... Apply batch;
+cqlsh:employee1> begin batch
+             ...  insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name) 
+             ...  values(104,'Prithvi Kumar','asst manager','2021-09-06',78523,'sells') 
+             ... Apply batch;
+cqlsh:employee1> begin batch
+             ...  insert into Employee_Info(Emp_Id,Emp_Name,Designation,Date_of_joining,Salary,Dept_name) 
+             ...  values(121,'Prithvi Raj','asst manager','2021-09-06',78523,'sells') 
+             ... apply batch;
+cqlsh:employee1> update Employee_Info set Emp_Name='Shree' where Emp_Id=121;
+cqlsh:employee1> update Employee_Info set Dept_name='sales' where Emp_Id=121;
+cqlsh:employee1> select* from Employee_Info;
+
+ emp_id | date_of_joining                 | dept_name | designation  | emp_name      | salary
+--------+---------------------------------+-----------+--------------+---------------+--------
+    121 | 2021-09-05 18:30:00.000000+0000 |     sales | asst manager |         Shree |  78523
+    104 | 2021-09-05 18:30:00.000000+0000 |     sells | asst manager | Prithvi Kumar |  78523
+    102 | 2021-09-05 18:30:00.000000+0000 |     sells |      manager |     Prithvi j |  78523
+
+(3 rows)
+cqlsh:employee1> select* from Employee_Info order by salary ASC;
+InvalidRequest: Error from server: code=2200 [Invalid query] message="ORDER BY is only supported when the partition key is restricted by an EQ or an IN."
+cqlsh:employee1> select* from Employee_Info ORDER BY salary ASC;
+InvalidRequest: Error from server: code=2200 [Invalid query] message="ORDER BY is only supported when the partition key is restricted by an EQ or an IN."
+cqlsh:employee1> alter table Employee_Info add projects text;
+cqlsh:employee1> select* from Employee_Info;
+
+ emp_id | date_of_joining                 | dept_name | designation  | emp_name      | projects | salary
+--------+---------------------------------+-----------+--------------+---------------+----------+--------
+    121 | 2021-09-05 18:30:00.000000+0000 |     sales | asst manager |         Shree |     null |  78523
+    104 | 2021-09-05 18:30:00.000000+0000 |     sells | asst manager | Prithvi Kumar |     null |  78523
+    102 | 2021-09-05 18:30:00.000000+0000 |     sells |      manager |     Prithvi j |     null |  78523
+
+(3 rows)
+cqlsh:employee1> update Employee_Info set projects='corona' where Emp_Id=121;
+cqlsh:employee1> update Employee_Info set projects='corona 1' where Emp_Id=104;
+cqlsh:employee1> update Employee_Info set projects='corona 2' where Emp_Id=102;
+cqlsh:employee1> select* from Employee_Info;
+
+ emp_id | date_of_joining                 | dept_name | designation  | emp_name      | projects | salary
+--------+---------------------------------+-----------+--------------+---------------+----------+--------
+    121 | 2021-09-05 18:30:00.000000+0000 |     sales | asst manager |         Shree |   corona |  78523
+    104 | 2021-09-05 18:30:00.000000+0000 |     sells | asst manager | Prithvi Kumar | corona 1 |  78523
+    102 | 2021-09-05 18:30:00.000000+0000 |     sells |      manager |     Prithvi j | corona 2 |  78523
+
