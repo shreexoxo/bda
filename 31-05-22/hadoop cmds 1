@@ -1,0 +1,167 @@
+hduser@bmsce-Precision-T1700:~$ start-all.sh
+This script is Deprecated. Instead use start-dfs.sh and start-yarn.sh
+Starting namenodes on [localhost]
+hduser@localhost's password: 
+localhost: starting namenode, logging to /usr/local/hadoop/logs/hadoop-hduser-namenode-bmsce-Precision-T1700.out
+hduser@localhost's password: 
+localhost: starting datanode, logging to /usr/local/hadoop/logs/hadoop-hduser-datanode-bmsce-Precision-T1700.out
+Starting secondary namenodes [0.0.0.0]
+hduser@0.0.0.0's password: 
+0.0.0.0: starting secondarynamenode, logging to /usr/local/hadoop/logs/hadoop-hduser-secondarynamenode-bmsce-Precision-T1700.out
+starting yarn daemons
+starting resourcemanager, logging to /usr/local/hadoop/logs/yarn-hduser-resourcemanager-bmsce-Precision-T1700.out
+hduser@localhost's password: 
+localhost: starting nodemanager, logging to /usr/local/hadoop/logs/yarn-hduser-nodemanager-bmsce-Precision-T1700.out
+hduser@bmsce-Precision-T1700:~$ jps
+7588 DataNode
+8311 NodeManager
+8439 Jps
+7416 NameNode
+7802 SecondaryNameNode
+7978 ResourceManager
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls
+ls: `.': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mkdir /shree
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls 
+ls: `.': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /
+Found 3 items
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 09:36 /shree
+drwxrwxr-x   - hduser supergroup          0 2019-08-01 16:19 /tmp
+drwxr-xr-x   - hduser supergroup          0 2019-08-01 16:03 /user
+hduser@bmsce-Precision-T1700:~$ ls
+ derby.log
+ Desktop
+ Documents
+ Downloads
+ eclipse-workspace
+ examples.desktop
+ G.txt
+ hadoop-2.6.0.tar.gz
+ hive
+'home\studentsinfo.csv'
+ idbi1
+ import_students_students_info.err.20190831_102223
+ metastore_db
+ Music
+'Packet Tracer 7.2.1 for Linux 64 bit.tar.gz'
+ Pictures
+ pig_1564816082257.log
+ pt
+ PT72Installer
+ Public
+ R
+ sidbi1
+ sidbi2
+ snap
+ studentsinfo.csv
+ Templates
+ toinstalledlist
+ Videos
+hduser@bmsce-Precision-T1700:~$ ls R
+x86_64-pc-linux-gnu-library
+hduser@bmsce-Precision-T1700:~$ ls Desktop
+Ubuntu-Softwares-Installation-files-31-07-2019
+hduser@bmsce-Precision-T1700:~$ ls Downloads
+ Cassandra_BDA.docx                          'WordCount (1).java'
+ kmeans.R                                     WordCount.java
+ libpng12-0_1.2.50-2+deb8u3_amd64.deb         WordMapper.java
+ libpng12-0_1.2.54-1ubuntu1.1_amd64.deb      'WordReducer (1).java'
+ libpng12-0-udeb_1.2.50-2+deb8u3_amd64.udeb   WordReducer.java
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree
+hduser@bmsce-Precision-T1700:~$ vi text.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put /home/hduser/Downloads/Cassandra_BDA.docx /shree
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree
+Found 1 items
+-rw-r--r--   1 hduser supergroup       4781 2022-05-31 09:49 /shree/Cassandra_BDA.docx
+hduser@bmsce-Precision-T1700:~$ ls
+ derby.log                                           Pictures
+ Desktop                                             pig_1564816082257.log
+ Documents                                           pt
+ Downloads                                           PT72Installer
+ eclipse-workspace                                   Public
+ examples.desktop                                    R
+ G.txt                                               sidbi1
+ hadoop-2.6.0.tar.gz                                 sidbi2
+ hive                                                snap
+'home\studentsinfo.csv'                              studentsinfo.csv
+ idbi1                                               Templates
+ import_students_students_info.err.20190831_102223   text.txt
+ metastore_db                                        toinstalledlist
+ Music                                               Videos
+'Packet Tracer 7.2.1 for Linux 64 bit.tar.gz'
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -touchz /shree/were.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree
+Found 2 items
+-rw-r--r--   1 hduser supergroup       4781 2022-05-31 09:49 /shree/Cassandra_BDA.docx
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:54 /shree/were.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree
+Found 2 items
+-rw-r--r--   1 hduser supergroup       4781 2022-05-31 09:49 /shree/Cassandra_BDA.docx
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:54 /shree/were.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -copyFromLocal /home/hduser/Downloads/Kmeans.R /shree
+copyFromLocal: `/home/hduser/Downloads/Kmeans.R': No such file or directory
+hduser@bmsce-Precision-T1700:~$ ls downaloads
+ls: cannot access 'downaloads': No such file or directory
+hduser@bmsce-Precision-T1700:~$ ls downloads
+ls: cannot access 'downloads': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -copyFromLocal /home/hduser/G.txt /shree
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree
+Found 3 items
+-rw-r--r--   1 hduser supergroup       4781 2022-05-31 09:49 /shree/Cassandra_BDA.docx
+-rw-r--r--   1 hduser supergroup         35 2022-05-31 10:05 /shree/G.txt
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:54 /shree/were.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -copyToLocal /shree/G.txt /home/hduser/Downloads 
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put /shree/were.txt /home/hduser/Downloads/
+put: `/home/hduser/Downloads/': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put /shree/were.txt /home/hduser/Downloads
+put: `/home/hduser/Downloads': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -get /shree/were.txt /home/hduser/Downloads
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree
+Found 3 items
+-rw-r--r--   1 hduser supergroup       4781 2022-05-31 09:49 /shree/Cassandra_BDA.docx
+-rw-r--r--   1 hduser supergroup         35 2022-05-31 10:05 /shree/G.txt
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:54 /shree/were.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cat /shree/were.txt
+hduser@bmsce-Precision-T1700:~$ vi text.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put /shree/were.txt text.txt
+put: `text.txt': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put /shree /text.txt
+put: `/shree': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put /shree/fff.txt /text.txt
+put: `/shree/fff.txt': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put /shree/fff.txt text.txt
+put: `text.txt': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -put text.txt /shree/ff.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree
+Found 4 items
+-rw-r--r--   1 hduser supergroup       4781 2022-05-31 09:49 /shree/Cassandra_BDA.docx
+-rw-r--r--   1 hduser supergroup         35 2022-05-31 10:05 /shree/G.txt
+-rw-r--r--   1 hduser supergroup         25 2022-05-31 10:15 /shree/ff.txt
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:54 /shree/were.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cat /shree/ff.txt
+hello 
+welcome to hadoop
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mkdir /shree2
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mv /shree /shree2
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree2
+Found 1 items
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 10:15 /shree2/shree
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /shree2/shree
+Found 4 items
+-rw-r--r--   1 hduser supergroup       4781 2022-05-31 09:49 /shree2/shree/Cassandra_BDA.docx
+-rw-r--r--   1 hduser supergroup         35 2022-05-31 10:05 /shree2/shree/G.txt
+-rw-r--r--   1 hduser supergroup         25 2022-05-31 10:15 /shree2/shree/ff.txt
+-rw-r--r--   1 hduser supergroup          0 2022-05-31 09:54 /shree2/shree/were.txt
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp /shree/were.txt /shree2
+cp: `/shree/were.txt': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp shree2/shree/were.txt /shree2
+cp: `shree2/shree/were.txt': No such file or directory
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -mkdir /geto
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -cp /shree2/shree /geto
+hduser@bmsce-Precision-T1700:~$ hdfs dfs -ls /geto
+Found 1 items
+drwxr-xr-x   - hduser supergroup          0 2022-05-31 10:20 /geto/shree
+hduser@bmsce-Precision-T1700:~$ ^C
+hduser@bmsce-Precision-T1700:~$ 
+
